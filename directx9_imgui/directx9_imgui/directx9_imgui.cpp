@@ -92,8 +92,6 @@ HRESULT APIENTRY DrawIndexedPrimitive_hook(LPDIRECT3DDEVICE9 pD3D9, D3DPRIMITIVE
 	return DrawIndexedPrimitive_orig(pD3D9, Type, BaseVertexIndex, MinVertexIndex, NumVertices, startIndex, primCount);
 }
 
-bool menu;
-
 HRESULT APIENTRY EndScene_hook(LPDIRECT3DDEVICE9 pD3D9) {
 
 	static bool init = true;
@@ -113,10 +111,6 @@ HRESULT APIENTRY EndScene_hook(LPDIRECT3DDEVICE9 pD3D9) {
 	ImGui::NewFrame();
 
 	ImGui::ShowDemoWindow();
-
-	if (GetAsyncKeyState(VK_INSERT) & 1) {
-		menu = !menu;
-	}
 
 	ImGui::GetIO().MouseDrawCursor = menu;
 
