@@ -1,32 +1,43 @@
-# Prerequisites
-*.d
+# Build output
+build/
+*.dll
+*.exe
+*.pdb
+*.ilk
+*.exp
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
+# Object files
 *.obj
+*.o
+*.lo
+*.slo
 
-# Precompiled Headers
+# Precompiled headers
 *.gch
 *.pch
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
+# Static libraries
 *.lib
+*.a
+*.la
+*.lai
 
-# Executables
-*.exe
-*.out
-*.app
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.ncb
+*.sdf
+*.opensdf
+*.opendb
+*.VC.db
+*.VC.VC.opendb
+ipch/
+x64/
+x86/
+Debug/
+Release/
+
+# ReSharper
+_ReSharper*/
+*.DotSettings.user

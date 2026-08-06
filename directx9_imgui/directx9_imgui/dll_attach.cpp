@@ -1,31 +1,29 @@
 #include <Windows.h>
-#include "min_hook/include/MinHook.h"
 
-DWORD WINAPI DirectXInit(__in  LPVOID lpParameter);
+// Defined in directx9_imgui.cpp
+DWORD WINAPI DirectXInit(LPVOID lpParameter);
+void         HookShutdown();
 
-void c_imgui_halt(void);
-
-void c_imgui_unhook(void)
+BOOL WINAPI DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
 {
-	c_imgui_halt();
-}
+    switch (dwReason)
+    {
+    case DLL_PROCESS_ATTACH:
+        DisableThreadLibraryCalls(hInstance);
+        {
+            HANDLE hThread = CreateThread(nullptr, 0, DirectXInit, hInstance, 0, nullptr);
+            if (hThread)
+                CloseHandle(hThread);
+        }
+        break;
 
-BOOL WINAPI DllMain(const HINSTANCE instance, const DWORD reason, const LPVOID reserved) {
-	switch (reason) {
-	case DLL_PROCESS_ATTACH: {
-		const auto thread = CreateThread(nullptr, NULL, DirectXInit, instance, NULL, nullptr);
-		if (thread != nullptr)
-			CloseHandle(thread);
-	} break;
+    case DLL_PROCESS_DETACH:
+        // lpReserved != NULL means the process is terminating —
+        // skip cleanup to avoid deadlocks in the loader lock.
+        if (!lpReserved)
+            HookShutdown();
+        break;
+    }
 
-	case DLL_PROCESS_DETACH: {
-		if (!reserved)
-			if (MH_Uninitialize() != MH_OK) { return 1; }
-		c_imgui_unhook();
-	} break;
-
-	default: break;
-	}
-
-	return TRUE;
+    return TRUE;
 }
